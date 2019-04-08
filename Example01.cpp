@@ -4,11 +4,20 @@
 using namespace std;
 
 struct Char_dict {
-    string key;
-    string val;
+private:
+    char* key;
+    char* val;
+    int count;
+
+public:
+    Char_dict(int maxLength) {
+        key = new char[maxLength];
+        val = new char[maxLength];
+        count = 0;
+    }
     
     bool check_keyval(char key, char val) {
-        for (int i = 0; i < (this->key).length(); ++i) {
+        for (int i = 0; i < count; ++i) {
             if (key == (this->key)[i] && val == (this->val)[i])
                 return true; // pair found and completely match
             else if (
@@ -22,8 +31,9 @@ struct Char_dict {
     }
     
     void add_keyval(char key, char val) {
-        (this->key) += key;
-        (this->val) += val;
+        (this->key)[count] = key;
+        (this->val)[count] = val;
+        ++count;
     } 
 };
 
@@ -43,7 +53,7 @@ bool AreStringsIsomorphic(char* a, char* b) {
     if (lengthA != lengthB)
         return false;
     
-    Char_dict char_dict;
+    Char_dict char_dict(lengthA);
         
     for (int i = 0; i < lengthA; ++i) {
         bool ok = char_dict.check_keyval(a[i], b[i]);
