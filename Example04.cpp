@@ -15,7 +15,7 @@ struct Node {
 
 class List {
 private:
-    Node* head; // pointer to first element in list
+    Node* head; // pointer to first node in list
     
     int length() {
         Node* curr = head;
@@ -35,7 +35,7 @@ public:
         head = NULL;
     }
     
-    // Create list from static array
+    // Create list from array
     List(char* arr, int len) {
         Node* prev;
         Node* curr;
@@ -49,41 +49,45 @@ public:
                 prev->next = curr;
             
             prev = curr; 
-            // cout << prev->val << endl; // debug: elements in list
+            // cout << prev->val << endl; // debug: nodes in list
         }
     }
     
-    void ReverseNodes(Node* head, int indexA, int indexB) {
-        Node* curr = head;
-        // Linking iterators
-        Node* L1 = NULL;
-        Node* L2 = NULL;
-        Node* L3 = NULL;
-        
+    void reverseNodes(Node** head, int indexA, int indexB) {
         int range = indexB - indexA;
         
         // If range is less than 2 elements, break
         if (range < 2)
             return;
 
-        // Positioning iterators
-        for (int i = 0; i < indexB - 1; ++i) {
-            if (i == indexA - 2)
-                L1 = curr;
+        Node* curr = *head;
+        // Reverse linking pointers
+        Node* L1 = NULL;
+        Node* L2 = NULL;
+        Node* L3 = NULL;
+        
+        // Positioning pointers
+        for (int i = 1; i < indexB; ++i) {
             if (i == indexA - 1)
-                L2 = curr;
+                L1 = curr;
             if (i == indexA)
+                L2 = curr;
+            if (i == indexA + 1)
                 L3 = curr;
             curr = curr->next;
         }
-        print_node(L3);
-        // I stage: link first 2 nodes (endpoints)
-        L1->next = curr;
-        L2->next = curr->next;
+
+        // I stage: link nodes at range endpoints
+        if (L1 == NULL) // if range starts from first node in list
+            *head = curr;
+        else
+            L1->next = curr;
         
-        // II stage: reverse linking list in range
+        L2->next = curr->next;
+
+        // II stage: reverse linking list nodes in range
         for (int i = 0; i < range; ++i) {
-            // Move iterators
+            // Move pointers
             L1 = L2;
             L2 = L3;
             L3 = L3->next;
@@ -92,8 +96,8 @@ public:
         }
     }
     
-    void ReverseNodes(int indexA, int indexB) {
-        ReverseNodes(head, indexA, indexB);
+    void reverseNodes(int indexA, int indexB) {
+        reverseNodes(&head, indexA, indexB);
     }
     
     void print_node(Node* node) {
@@ -104,7 +108,7 @@ public:
         cout << "  next: " << ((node->next == NULL) ? '0' : node->next->data) << endl;
     }
     
-    // Return static array from list elements
+    // Return array from list elements
     char* list_to_arr() {
         Node* curr = head;
         int len = length();
@@ -113,7 +117,7 @@ public:
         for (int i = 0; i < len; ++i) {
             arr[i] = curr->data;
             curr = curr->next;
-            // cout << arr[i] << endl; // debug: elements in static list
+            // cout << arr[i] << endl; // debug: elements in array
         }
         return arr;
     }
@@ -128,8 +132,17 @@ int main()
     int indexA = 2;
     int indexB = 4;
     
+    // int indexA = 1;
+    // int indexB = 3;
+    
+    // int indexA = 4;
+    // int indexB = 6;
+    
+    // int indexA = 1;
+    // int indexB = 6;
+    
     List list(a, m);
-    list.ReverseNodes(indexA, indexB);
+    list.reverseNodes(indexA, indexB);
     b = list.list_to_arr();
     
     for (int i = 0; i < m; ++i)
@@ -137,5 +150,3 @@ int main()
     
     return 0;
 }
-
-
