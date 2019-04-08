@@ -4,41 +4,36 @@
 using namespace std;
 
 int MinPeriod(int* a, int n) {
-    int T = 0; // length of repeating array
-    bool T_stop = false; // stop creating repeating array
-    
-    int T_arr[n]; // repeating array
+    int T = 0; // length of repeating array (minimal period)
+    bool T_stop = false; // stop defining repeating array
     
     for (int i = 0; i < n; ++i) {
         // If repeating array is not repeated, break
-        if (T_stop && T_arr[i % T] != a[i])
+        if (T_stop && a[i % T] != a[i])
             return n;
-        // If first element repeated, stop creating repeating array
+        // If first element repeated, stop increasing repeating array length
         else if (i != 0 && a[i] == a[0])
             T_stop = true;
-        // If creating repeating array is not stopped, continue creating
-        else if (!T_stop) {
-            T_arr[i] = a[i];
+        // If repeating array is not stopped, increase repeating array length
+        else if (!T_stop)
             ++T;
-        }
     }
     
-    // If last elements of arrays does not match, break
-    if (T_arr[T-1] != a[n-1])
+    // If last elements of array does not match to last element of repeating array, break
+    if (a[T-1] != a[n-1])
         return n;
-    // Repeating array sequence completed, return period
+    // Repeating array sequence confirmed, return period
     else
         return T;
 }
 
 int main()
 {
-    //int a[] = { 2, 5, 3, 4, 2, 5, 3, 4 };
+    // int a[] = { 2, 5, 3, 4, 2, 5, 3, 4 };
     int a[] = { 2, 5, 3, 2, 5, 3, 2, 5 };
     int n = 8;
     
-    int T = MinPeriod(a, n);
-    cout << T << endl;
+    cout << MinPeriod(a, n) << endl;
 
     return 0;
 }
