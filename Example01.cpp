@@ -1,4 +1,7 @@
-// Are Strings Isomorphic
+// Are Strings Isomorphic?
+
+#include <iostream>
+using namespace std;
 
 struct Char_dict {
     string key;
@@ -24,18 +27,45 @@ struct Char_dict {
     } 
 };
 
-class Solution {
-public:
-    bool isIsomorphic(string s, string t) {
-        Char_dict char_dict;
-        
-        if (s.length() != t.length())
-            return false;
-        
-        for (int i = 0; i < s.length(); ++i) {
-            bool ok = char_dict.check_keyval(s[i], t[i]);
-            if (!ok) return false;
-        }
-        return true;
+int charArrayLength(char* cArr) {
+    int length = 0;
+    while (*(cArr + length) != '\0') {
+        ++length;
     }
-};
+    
+    return length;    
+}
+
+bool AreStringsIsomorphic(char* a, char* b) {
+    int lengthA = charArrayLength(a);
+    int lengthB = charArrayLength(b);
+    
+    if (lengthA != lengthB)
+        return false;
+    
+    Char_dict char_dict;
+        
+    for (int i = 0; i < lengthA; ++i) {
+        bool ok = char_dict.check_keyval(a[i], b[i]);
+        if (!ok) return false;
+    }
+    return true;
+}
+
+int main()
+{
+    // char A[] = "brain";
+    // char B[] = "space";
+    
+    // char A[] = "noon";
+    // char B[] = "feet";
+    
+    // This test example returns true because it meets all listed rules
+    // so, false result cannot be expected here.
+    char A[] = "aab";
+    char B[] = "ccd";
+    
+    cout << AreStringsIsomorphic(A, B) << endl;
+
+    return 0;
+}
