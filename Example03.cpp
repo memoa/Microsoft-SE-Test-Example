@@ -4,21 +4,16 @@
 using namespace std;
 
 int MinPeriod(int* a, int n) {
-    int T = 0; // length of repeating array (minimal period)
-    bool T_stop = false; // stop defining repeating array
+    if (n < 1)
+        return 0;
+        
+    int T = 1; // length of repeating array (minimal period)
     
-    for (int i = 0; i < n; ++i) {
-        // If repeating array is not repeated, break
-        if (T_stop && a[i % T] != a[i])
-            return n;
-        // If first element repeated, stop increasing repeating array length
-        else if (i != 0 && a[i] == a[0])
-            T_stop = true;
-        // If repeating array is not stopped, increase repeating array length
-        else if (!T_stop)
-            ++T;
-    }
-    
+    for (int i = 1; i < n; ++i)
+        // If repeating array is not repeated, new length of repeating array is assigned
+        if (a[i % T] != a[i])
+            T = i;
+
     // If last elements of array does not match to last element of repeating array, break
     if (a[T-1] != a[n-1])
         return n;
@@ -37,4 +32,5 @@ int main()
 
     return 0;
 }
+
 
